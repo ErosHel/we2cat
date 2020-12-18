@@ -1,0 +1,29 @@
+<idea-plugin>
+    <id>com.we2cat.plugin</id>
+    <name>We2cat</name>
+    <vendor>hel</vendor>
+
+    <!-- Product and plugin compatibility requirements -->
+    <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
+    <!--    <depends>com.intellij.modules.platform</depends>-->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <consoleFilterProvider implementation="com.we2cat.provider.MybatisLogProvider"/>
+        <applicationService serviceImplementation="com.we2cat.services.MyApplicationService"/>
+        <projectService serviceImplementation="com.we2cat.services.MyProjectService"/>
+        <toolWindow factoryClass="com.we2cat.window.MybatisLogToolWindow" id="Mybatis Log"
+                    secondary="true" icon="/icons/mybatis.png" anchor="bottom"/>
+    </extensions>
+
+    <applicationListeners>
+        <listener class="com.we2cat.listeners.MyProjectManagerListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
+    <actions>
+        <action id="RestoreSqlForSelection" class="com.we2cat.action.RestoreSqlForSelection"
+                text="选中的sql语句文本" description="选中的文本进行格式化">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="ConsoleEditorPopupMenu" anchor="before" relative-to-action="ConsoleView.ClearAll"/>
+        </action>
+    </actions>
+</idea-plugin>
