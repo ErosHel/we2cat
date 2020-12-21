@@ -6,10 +6,10 @@ import java.awt.Color
 /**
  * Created by hel on 2020/12/18 14:42
  */
-const val Sql_Preparing = "Preparing: "
-const val Sql_Parameters = "Parameters:"
-private val ParamRegex = Regex(" .+\\([A-Za-z]{1,10}\\),?")
-private const val startWith = " "
+private const val Preparing = "Preparing: "
+private const val Parameters = "Parameters:"
+private const val StartWith = " "
+private val paramRegex = Regex(" .+\\([A-Za-z]{1,10}\\),?")
 
 private var preparingLine = ""
 
@@ -21,10 +21,14 @@ private var parametersLine = ""
  * [line] 当前行内容
  */
 fun mybatisSqlLog(projectBasePath: String, line: String) {
-    if (!line.startsWith(startWith)) {
+    if (!line.startsWith(StartWith)) {
         setLine(line)
         if (preparingLine.isNotBlank() && parametersLine.isNotEmpty()) {
-            logPrintln(projectBasePath, jointSql(preparingLine, parametersLine), getColor())
+            logPrintln(
+                projectBasePath,
+                jointSql(preparingLine, parametersLine),
+                getColor(preparingLine[0].toLowerCase())
+            )
             resetLine()
         }
     }
@@ -34,18 +38,18 @@ fun mybatisSqlLog(projectBasePath: String, line: String) {
  * 设置行数据
  */
 private fun setLine(line: String) {
-    if (line.contains(Sql_Preparing)) preparingLine = line.split(Sql_Preparing)[1]
-    if (line.contains(Sql_Parameters)) parametersLine = line.split(Sql_Parameters)[1]
+    if (line.contains(Preparing)) preparingLine = line.split(Preparing)[1]
+    if (line.contains(Parameters)) parametersLine = line.split(Parameters)[1]
 }
 
 /**
  * 获取颜色
  */
-private fun getColor() = when {
-    preparingLine.startsWith("insert") -> Color.GREEN
-    preparingLine.startsWith("delete") -> Color.RED
-    preparingLine.startsWith("update") -> Color.BLUE
-    preparingLine.startsWith("select") -> Color.ORANGE
+private fun getColor(sqlHead: Char) = when (sqlHead) {
+    'i' -> Color.GREEN
+    'd' -> Color.RED
+    'u' -> Color.BLUE
+    's' -> Color.ORANGE
     else -> Color.GRAY
 }
 
@@ -60,7 +64,7 @@ private fun parseSql(preparing: String): String =
  * 解析参数
  */
 private fun parseParam(parameters: String): Array<String> =
-    if (parameters.contains(ParamRegex)) parameters.split(",")
+    if (parameters.contains(paramRegex)) parameters.split(",")
         .map { it.split("(")[0].substring(1) }
         .toTypedArray()
     else emptyArray()
@@ -70,7 +74,7 @@ private fun parseParam(parameters: String): Array<String> =
  */
 private fun jointSql(preparing: String, parameters: String): String =
     parseParam(parameters).let {
-        "$startWith${if (it.isEmpty()) preparing else parseSql(preparing).format(*it)}"
+        "$StartWith${if (it.isEmpty()) preparing else parseSql(preparing).format(*it)}"
     }
 
 /**
