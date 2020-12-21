@@ -9,4 +9,5 @@
 
 <!-- Plugin description -->
 **we2cat**是一个包含众多mybatis及其他自动化功能
+- 字符串下划线与大写字母进行转换
 <!-- Plugin description end -->

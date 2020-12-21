@@ -8,7 +8,7 @@ import com.we2cat.icons.Icon_Mybatis
 /**
  * Created by hel on 2020/12/16 18:08
  */
-class RestoreSqlForSelection : AnAction(Icon_Mybatis) {
+class MybatisSqlForSelectionAction : AnAction(Icon_Mybatis) {
 
     override fun actionPerformed(e: AnActionEvent) {
         val selectedText = e.getData(LangDataKeys.EDITOR)!!

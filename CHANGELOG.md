@@ -1,10 +1,14 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# IntelliJ Platform Plugin Template Changelog
+# w2cat的版本更改记录
 
 ## [Unreleased]
 ### Changed
 - 待开发的Mybatis xml自动提示
+
+## [0.2.0]
+### Added
+- 增加字符串大写与下划线转换，快捷键ALT+P
 
 ## [0.1.0]
 ### Added
