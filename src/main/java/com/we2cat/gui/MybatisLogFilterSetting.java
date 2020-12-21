@@ -1,4 +1,4 @@
-package com.we2cat.action.gui;
+package com.we2cat.gui;
 
 import com.intellij.openapi.project.Project;
 
