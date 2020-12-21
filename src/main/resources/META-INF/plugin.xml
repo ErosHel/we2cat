@@ -18,6 +18,8 @@
     <applicationListeners>
         <listener class="com.we2cat.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
+        <listener class="com.we2cat.listeners.AppListener"
+                  topic="com.intellij.ide.AppLifecycleListener"/>
     </applicationListeners>
     <actions>
         <action id="RestoreSqlForSelection" class="com.we2cat.action.MybatisSqlForSelectionAction"

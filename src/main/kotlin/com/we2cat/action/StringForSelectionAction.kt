@@ -3,7 +3,6 @@ package com.we2cat.action
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
-import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.we2cat.utils.parseAssignByUppercase
 import com.we2cat.utils.parseUppercaseByAssign
@@ -15,7 +14,7 @@ class StringForSelectionAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
         WriteCommandAction.runWriteCommandAction(e.project) {
-            val editor = e.getData(LangDataKeys.EDITOR)!!
+            val editor = e.getData(CommonDataKeys.EDITOR)!!
             val selectedText = editor.caretModel.currentCaret.selectedText
             if (selectedText.isNullOrBlank()) {
                 return@runWriteCommandAction
