@@ -4,11 +4,8 @@
 
 ## [Unreleased]
 ### Changed
-- build.gradle.kts: simpler syntax for configuring `KotlinCompile`
-- Dependencies - upgrade `org.jetbrains.kotlin.jvm` to `1.4.21`
+- 待开发的Mybatis xml自动提示
 
-## [0.0.1]
+## [0.1.0]
 ### Added
-- Initial project scaffold
-- GitHub Actions to automate testing and deployment
-- Kotlin support
+- Mybatis的sql自动拼接功能

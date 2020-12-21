@@ -35,11 +35,27 @@ fun mybatisSqlLog(projectBasePath: String, line: String) {
 }
 
 /**
+ * 参数拼接
+ */
+private fun jointSql(preparing: String, parameters: String): String =
+    parseParam(parameters).let {
+        "$StartWith${if (it.isEmpty()) preparing else parseSql(preparing).format(*it)}"
+    }
+
+/**
  * 设置行数据
  */
 private fun setLine(line: String) {
     if (line.contains(Preparing)) preparingLine = line.split(Preparing)[1]
     if (line.contains(Parameters)) parametersLine = line.split(Parameters)[1]
+}
+
+/**
+ * 重置行
+ */
+private fun resetLine() {
+    preparingLine = ""
+    parametersLine = ""
 }
 
 /**
@@ -68,19 +84,3 @@ private fun parseParam(parameters: String): Array<String> =
         .map { it.split("(")[0].substring(1) }
         .toTypedArray()
     else emptyArray()
-
-/**
- * 参数拼接
- */
-private fun jointSql(preparing: String, parameters: String): String =
-    parseParam(parameters).let {
-        "$StartWith${if (it.isEmpty()) preparing else parseSql(preparing).format(*it)}"
-    }
-
-/**
- * 重置行
- */
-private fun resetLine() {
-    preparingLine = ""
-    parametersLine = ""
-}
