@@ -28,7 +28,7 @@ fun parseAssignByUppercase(text: String, assign: Char): String =
         var i = 0
         while (i < text.length) {
             if (text[i] == assign)
-                sb.append(text[++i] - 32)
+                sb.append(text[++i].toLowerCase() - 32)
             else sb.append(text[i])
             i++
         }

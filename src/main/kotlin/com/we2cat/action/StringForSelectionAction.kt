@@ -19,9 +19,11 @@ class StringForSelectionAction : AnAction() {
             if (selectedText.isNullOrBlank()) {
                 return@runWriteCommandAction
             }
-            val replaceText = if (selectedText.contains("_"))
-                parseAssignByUppercase(selectedText, '_')
-            else parseUppercaseByAssign(selectedText, '_')
+            val replaceText = when {
+                selectedText.contains(" ") -> selectedText.replace(" ", "_")
+                selectedText.contains("_") -> parseAssignByUppercase(selectedText, '_')
+                else -> parseUppercaseByAssign(selectedText, '_')
+            }
             val selectionModel = editor.selectionModel
             editor.document.replaceString(
                 selectionModel.selectionStart,
