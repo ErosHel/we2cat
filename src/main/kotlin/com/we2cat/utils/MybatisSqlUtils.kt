@@ -28,7 +28,7 @@ fun mybatisSqlLog(projectBasePath: String, line: String) {
             jointSql(preparingLine, parametersLine)?.let {
                 logPrintln(
                     projectBasePath,
-                    "$StartWith${it}",
+                    "$StartWith$it",
                     getColor(preparingLine[0].toLowerCase())
                 )
             }
