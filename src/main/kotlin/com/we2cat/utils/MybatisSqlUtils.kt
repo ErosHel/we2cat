@@ -41,32 +41,25 @@ fun mybatisSqlLog(projectBasePath: String, line: String) {
  * 参数拼接
  */
 private fun jointSql(preparing: String, parameters: String): String? {
-    var placeArray: Array<String?>? = null
     val paramArray = if (parameters.contains(paramRegex))
-        parameters.split(",")
-            .also {
-                placeArray = arrayOfNulls(it.size)
-            }
-            .mapIndexed { index, s ->
-                val paramList = s.split("(")
-                placeArray!![index] = getPlace(paramList[1].replace(paramTypeRegex, ""))
-                paramList[0].substring(1)
-            }
-            .toTypedArray()
+        parameters.split(",").map { getFullParam(it) }.toTypedArray()
     else emptyArray()
+
     if (preparing.filter { c -> c == '?' }.count() != paramArray.size) return null
     if (paramArray.isEmpty()) return preparing
-    var formatSql = preparing
-    placeArray?.forEach { formatSql = formatSql.replaceFirst("?", it!!) }
-    return formatSql.format(*paramArray)
+    return preparing.replace("?", "%s").format(*paramArray)
 }
 
 /**
- * 获取占位符
+ * 获取完整参数
  */
-private fun getPlace(str: String): String = when (str) {
-    "Integer", "Long", "Float", "Double" -> "%s"
-    else -> "'%s'"
+private fun getFullParam(param: String): String {
+    val paramList = param.split("(")
+    val value = paramList[0].substring(1)
+    return when (paramList[1].replace(paramTypeRegex, "")) {
+        "Integer", "Long", "Float", "Double" -> value
+        else -> "'$value'"
+    }
 }
 
 /**
