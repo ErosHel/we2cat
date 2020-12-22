@@ -10,7 +10,7 @@ import com.intellij.openapi.project.Project
 class EditorListener(project: Project) : FileEditorManagerListener {
 
     override fun selectionChanged(event: FileEditorManagerEvent) {
-        println("selectionChanged${event.newEditor!!.name}")
+        println("selectionChanged${event.newEditor?.name}")
     }
 
 }
