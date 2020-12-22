@@ -22,7 +22,7 @@ public class MybatisLogFilterSetting extends JDialog {
     private JCheckBox startupCheckBox;
 
     /**
-     * 窗口初始化
+     * 窗口初始
      *
      * @param project 项目
      */

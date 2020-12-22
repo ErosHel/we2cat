@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin require-restart="false">
     <id>com.we2cat.plugin</id>
     <name>We2cat</name>
     <vendor>hel</vendor>
@@ -8,7 +8,7 @@
     <!--    <depends>com.intellij.modules.platform</depends>-->
 
     <extensions defaultExtensionNs="com.intellij">
-        <consoleFilterProvider implementation="com.we2cat.provider.MybatisLogProvider"/>
+        <consoleFilterProvider implementation="com.we2cat.provider.MybatisLogFilterProvider"/>
         <applicationService serviceImplementation="com.we2cat.services.MyApplicationService"/>
         <projectService serviceImplementation="com.we2cat.services.MyProjectService"/>
         <toolWindow factoryClass="com.we2cat.window.MybatisLogToolWindow" id="Mybatis Log"
@@ -22,12 +22,12 @@
                   topic="com.intellij.ide.AppLifecycleListener"/>
     </applicationListeners>
     <actions>
-        <action id="RestoreSqlForSelection" class="com.we2cat.action.MybatisSqlForSelectionAction"
+        <action id="we2cat.mybatis.RestoreSqlForSelection" class="com.we2cat.action.MybatisSqlForSelectionAction"
                 text="选中的sql语句文本" description="选中的文本进行格式化">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ConsoleEditorPopupMenu" anchor="before" relative-to-action="ConsoleView.ClearAll"/>
         </action>
-        <action id="string.StringForSelection" class="com.we2cat.action.StringForSelectionAction" text="字符串操作"
+        <action id="we2cat.string.StringForSelection" class="com.we2cat.action.StringForSelectionAction" text="字符串操作"
                 description="对字符串进行操作">
             <add-to-group group-id="EditMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="alt P"/>
