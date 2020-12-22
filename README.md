@@ -9,5 +9,9 @@
 
 <!-- Plugin description -->
 **we2cat**是一个包含众多mybatis及其他自动化功能
-- 字符串下划线与大写字母进行转换
+- mybatis sql日志转换完整并打印
+- 字符串下划线与大写字母进行转换<kbd>**Alt + P**</kbd>
+>- abc def -> abc_def
+>- abc_def -> abcDef
+>- abcDef -> abc_def
 <!-- Plugin description end -->
