@@ -12,11 +12,7 @@ import com.we2cat.utils.mybatisSqlLog
  */
 class MybatisLogFilterProvider : ConsoleFilterProvider {
 
-    override fun getDefaultFilters(project: Project): Array<Filter> {
-        return arrayOf(Filter { line, _ ->
-            mybatisSqlLog(project.basePath!!, line)
-            null
-        })
-    }
+    override fun getDefaultFilters(project: Project): Array<Filter> =
+        arrayOf(Filter { line, _ -> mybatisSqlLog(project.basePath!!, line);null })
 
 }
