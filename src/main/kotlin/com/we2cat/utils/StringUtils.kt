@@ -29,7 +29,7 @@ fun parseAssignByUppercase(text: String, assign: Char): String =
         while (i < text.length) {
             if (text[i] == assign) {
                 val c = text[++i]
-                if (c.toInt() in 97..109)
+                if (c.toInt() in 97..122)
                     sb.append(c.toLowerCase() - 32)
                 else sb.append(c)
             } else sb.append(text[i])
