@@ -10,7 +10,8 @@ private const val Preparing = "Preparing: "
 private const val Parameters = "Parameters:"
 private const val StartWith = " "
 private val paramRegex = Regex(" .+\\([A-Za-z]{1,10}\\),?")
-private val paramTypeRegex = Regex("\\)[\\n]?")
+private val typeRegex = Regex("[, ]|\\s")
+private val paramAndTypeRegex = Regex("\\(.*?\\)[,\\s]?")
 
 private var preparingLine = ""
 
@@ -42,25 +43,37 @@ fun mybatisSqlLog(projectBasePath: String, line: String) {
  */
 private fun jointSql(preparing: String, parameters: String): String? {
     val paramArray = if (parameters.contains(paramRegex))
-        parameters.split(",").map { getFullParam(it) }.toTypedArray()
-    else emptyArray()
-
+        getParams(parameters) else emptyArray()
     if (preparing.filter { c -> c == '?' }.count() != paramArray.size) return null
     if (paramArray.isEmpty()) return preparing
     return preparing.replace("?", "%s").format(*paramArray)
 }
 
 /**
- * 获取完整参数
+ * 获取所有参数
  */
-private fun getFullParam(param: String): String {
-    val paramList = param.split("(")
-    val value = paramList[0].substring(1)
-    return when (paramList[1].replace(paramTypeRegex, "")) {
-        "Integer", "Long", "Float", "Double" -> value
-        else -> "'$value'"
+fun getParams(parameters: String): Array<String> {
+    val arrayList = arrayListOf<String>()
+    val params = parameters.split(paramAndTypeRegex)
+    paramAndTypeRegex.findAll(parameters).toList().forEachIndexed { index, s ->
+        arrayList.add(
+            getParamByType(
+                params[index].substring(1),
+                s.value.replace(typeRegex, "")
+            )
+        )
     }
+    return arrayList.toTypedArray()
 }
+
+/**
+ * 获取完整拼接参数
+ */
+fun getParamByType(param: String, type: String): String =
+    when (type) {
+        "(Integer)", "(Long)", "(Float)", "(Double)" -> param
+        else -> "'$param'"
+    }
 
 /**
  * 设置行数据
