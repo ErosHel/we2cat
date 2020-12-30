@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by hel on 2020/12/30 10:03
  */
-public class GenerateMybatisPlusCode extends JDialog {
+public class GenerateMybatisPlusCodeGui extends JDialog {
 
     /**
      * 画布
@@ -91,12 +91,13 @@ public class GenerateMybatisPlusCode extends JDialog {
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    public GenerateMybatisPlusCode(Project project) {
+    public GenerateMybatisPlusCodeGui(Project project) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int x = screenSize.width / 2 - WIDTH / 2;
         int y = screenSize.height / 2 - HEIGHT / 2 - 30;
         setBounds(x, y, WIDTH, HEIGHT);
-        setVisible(true);
+        setFocusable(true);
+        setAlwaysOnTop(true);
         setTitle("mybatis-plus代码生成");
         setContentPane(contentPane);
         setModal(Boolean.TRUE);

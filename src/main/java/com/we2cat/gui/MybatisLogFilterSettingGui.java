@@ -10,7 +10,7 @@ import java.awt.event.WindowEvent;
 /**
  * Created by hel on 2020/12/16 18:21
  */
-public class MybatisLogFilterSetting extends JDialog {
+public class MybatisLogFilterSettingGui extends JDialog {
 
     private static final String filterName = "过滤设置";
 
@@ -26,7 +26,7 @@ public class MybatisLogFilterSetting extends JDialog {
      *
      * @param project 项目
      */
-    public MybatisLogFilterSetting(Project project) {
+    public MybatisLogFilterSettingGui(Project project) {
         setTitle(filterName);
         setContentPane(contentPane);
         setModal(Boolean.TRUE);

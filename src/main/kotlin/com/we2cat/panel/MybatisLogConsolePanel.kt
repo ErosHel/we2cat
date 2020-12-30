@@ -10,7 +10,7 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.editor.markup.TextAttributes
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.SimpleToolWindowPanel
-import com.we2cat.gui.MybatisLogFilterSetting
+import com.we2cat.gui.MybatisLogFilterSettingGui
 import java.awt.BorderLayout
 import java.awt.Color
 import java.awt.Font
@@ -67,7 +67,7 @@ class MybatisLogConsolePanel {
     private fun createActionToolbar(project: Project, consoleView: ConsoleView): ActionToolbar {
         val actionGroup = DefaultActionGroup()
         actionGroup.add(MybatisLogConsoleGroup.FilterAction {
-            val setting = MybatisLogFilterSetting(project)
+            val setting = MybatisLogFilterSettingGui(project)
             setting.pack()
             setting.setSize(264, 157)
             setting.setLocationRelativeTo(null)
