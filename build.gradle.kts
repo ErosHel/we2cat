@@ -44,7 +44,7 @@ repositories {
 }
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.14.2")
-    implementation("com.we2cat:mybatis-plus-auto:Yes")
+    implementation("com.we2cat:mybatis-plus-auto:we2cat")
 }
 
 // Configure gradle-intellij-plugin plugin.
