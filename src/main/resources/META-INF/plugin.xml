@@ -32,5 +32,10 @@
             <add-to-group group-id="EditMenu" anchor="last"/>
             <keyboard-shortcut keymap="$default" first-keystroke="alt P"/>
         </action>
+        <action id="we2cat.mybatis.GenerateMybatisPlusCode" class="com.we2cat.action.GenerateMybatisPlusCodeAction"
+                text="生成mybatis-plus模板代码" description="生成mybatis-plus模板代码" icon="/icons/mybatis.png">
+            <add-to-group group-id="ToolsMenu" anchor="before" relative-to-action="ToolsBasicGroup"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt G"/>
+        </action>
     </actions>
 </idea-plugin>

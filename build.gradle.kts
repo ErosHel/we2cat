@@ -38,11 +38,13 @@ version = pluginVersion
 
 // Configure project's dependencies
 repositories {
+    mavenLocal()
     mavenCentral()
     jcenter()
 }
 dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.14.2")
+    implementation("com.we2cat:mybatis-plus-auto:Yes")
 }
 
 // Configure gradle-intellij-plugin plugin.
@@ -76,6 +78,7 @@ tasks {
     withType<JavaCompile> {
         sourceCompatibility = "1.8"
         targetCompatibility = "1.8"
+        options.encoding = "UTF-8"
     }
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
