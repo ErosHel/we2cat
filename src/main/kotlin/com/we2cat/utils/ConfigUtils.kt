@@ -15,7 +15,13 @@ import java.nio.file.Path
  * we2cat目录
  */
 private var userHome: String? = null
-    get():String? = field ?: "${System.getProperty("user.home")}/.we2cat/".also { field = it }
+    get():String? = field ?: "${getUserDir()}/.we2cat/".also { field = it }
+
+/**
+ * 当前操作系统
+ */
+private var os: String? = null
+    get():String? = field ?: System.getProperty("os.name").also { field = it }
 
 /**
  * 生成Mybatis-plus代码本地配置文件名
@@ -77,3 +83,13 @@ private fun <T> getContent(fileName: String, clazz: Class<T>): T? {
     }
     return null
 }
+
+/**
+ * 获取系统用户目录
+ */
+fun getUserDir():String = System.getProperty("user.home")
+
+/**
+ * 当前系统是否是windows
+ */
+fun isWindows(): Boolean = os!!.indexOf("windows") >= 0

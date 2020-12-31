@@ -50,4 +50,34 @@ class GenerateMybatisPlusCodeConfig {
      */
     var outPath: String? = null
 
+    /**
+     * 生成作者
+     */
+    var author: String? = null
+
+    /**
+     * 领域包名
+     */
+    var domainName: String? = null
+
+    /**
+     * 持久层包名
+     */
+    var mapperPagName: String? = null
+
+    /**
+     * 持久层后缀
+     */
+    var mapperEnd: String? = null
+
+    /**
+     * 领域层包名
+     */
+    var domainPagName: String? = null
+
+    /**
+     * 领域层后缀
+     */
+    var domainEnd: String? = null
+
 }

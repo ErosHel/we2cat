@@ -39,3 +39,15 @@ fun parseAssignByUppercase(text: String, assign: Char): String =
         }
         sb.toString()
     }
+
+/**
+ * 拼接字符串
+ */
+fun join(vararg str: String): String {
+    val sb = StringBuilder()
+    str.forEach { sb.append(it) }
+    return sb.toString()
+}
+
+fun getOrElse(str: String?, elseStr: String): String =
+    if (str.isNullOrBlank()) elseStr else str

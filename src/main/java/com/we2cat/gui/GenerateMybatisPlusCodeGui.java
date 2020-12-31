@@ -6,18 +6,14 @@ import com.we2cat.codeauto.AutoCode;
 import com.we2cat.entity.GenerateMybatisPlusCodeConfig;
 import com.we2cat.exception.AlertException;
 import com.we2cat.utils.ConfigUtilsKt;
+import com.we2cat.utils.StringUtilsKt;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hel on 2020/12/30 10:03
@@ -119,18 +115,35 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
      */
     private JTextField mapperPag;
 
+    /**
+     * 生成作者
+     */
+    private JTextField author;
+
     private static final int WIDTH = 600;
 
     private static final int HEIGHT = 440;
 
     private final Project project;
 
-    private String mapperPagName = "mapper";
+    /**
+     * 持久层包名
+     */
+    private String mapperPagName = ".mapper";
 
+    /**
+     * 持久层后缀
+     */
     private String mapperEnd = "Mapper";
 
-    private String domainPagName = "entity";
+    /**
+     * 领域层包名
+     */
+    private String domainPagName = ".entity";
 
+    /**
+     * 领域层后缀
+     */
     private String domainEnd = "";
 
     private String lastControllerPag = null;
@@ -142,9 +155,9 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
 
     public GenerateMybatisPlusCodeGui(Project project) {
         this.project = project;
-        setDefaultValue();
         setListener();
         getAndSetConfig();
+        setDefaultValue();
     }
 
     /**
@@ -157,7 +170,7 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
         pagName.addCaretListener(e -> changePag());
         modelName.addCaretListener(e -> changePag());
         childModelName.addCaretListener(e -> changePag());
-        domainName.addActionListener(e -> changePag());
+        domainName.addCaretListener(e -> changePag());
     }
 
     /**
@@ -181,7 +194,13 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
         this.childModelName.setName("子模块");
         this.dbName.setName("数据库");
         this.outPath.setName("输出目录");
+        this.author.setName("生成作者");
         projectName.setText(project.getName());
+        if (outPath.getText().length() == 0) {
+            String dir = ConfigUtilsKt.isWindows() ? "D:/tmp"
+                    : StringUtilsKt.join(ConfigUtilsKt.getUserDir(), "/tmp");
+            outPath.setText(dir);
+        }
     }
 
     /**
@@ -192,26 +211,31 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
         executor.execute(() -> {
             try {
                 for (String appName : getText(modelName).split(",")) {
-                    String childModelName = getText(this.childModelName);
-                    AutoCode.of("", getText(pagName))
+                    String model = Optional.ofNullable(domainName.getText())
+                            .filter(s -> s.length() > 0)
+                            .orElse(appName);
+                    String servicePag = StringUtilsKt.join(appName, lastServicePag);
+                    String mapperPag = StringUtilsKt.join(appName, lastMapperPag);
+                    AutoCode.of(getText(pagName))
+                            .setAuthor(getText(author))
                             .setDeleteName("deleted")
                             .setTable(Optional.ofNullable(table.getText())
                                     .filter(t -> t.length() > 0)
                                     .map(t -> t.split(","))
                                     .orElse(null))
                             .setDbUser(getText(dbUser))
-                            .setOutPath(getText(outPath) + "/" + project.getName())
+                            .setOutPath(StringUtilsKt.join(getText(outPath), "/", project.getName()))
                             .setDbUrl(getText(dbUrl))
                             .setDbPw(getText(dbPw))
                             .setDbName(getText(dbName))
                             .setFileOverride(true)
-                            .setControllerPag(appName + ".controller." + childModelName)
-                            .setServicePag(appName + ".service." + childModelName)
-                            .setServiceImplPag(appName + ".service." + childModelName + ".impl")
+                            .setControllerPag(StringUtilsKt.join(appName, lastControllerPag))
+                            .setServicePag(servicePag)
+                            .setServiceImplPag(StringUtilsKt.join(servicePag, ".impl"))
                             .setDaoEnd(mapperEnd)
-                            .setDaoPag(appName + ".mapper." + childModelName)
-                            .setMapperPag(appName + ".mapper." + childModelName + ".xml")
-                            .setEntityPag("model.entity." + childModelName)
+                            .setDaoPag(mapperPag)
+                            .setMapperPag(StringUtilsKt.join(mapperPag, ".xml"))
+                            .setEntityPag(StringUtilsKt.join(model, lastDomainPag))
                             .setEntityEnd(domainEnd)
                             .setActiveRecord(false)
                             .start();
@@ -248,7 +272,7 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
         alert.setText(text);
         executor.execute(() -> {
             try {
-                TimeUnit.SECONDS.sleep(3);
+                Thread.sleep(2500);
             } catch (InterruptedException ignored) {
             } finally {
                 runnable.run();
@@ -272,6 +296,12 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
         gmc.setChildModelName(childModelName.getText());
         gmc.setTable(table.getText());
         gmc.setOutPath(outPath.getText());
+        gmc.setAuthor(author.getText());
+        gmc.setDomainName(domainName.getText());
+        gmc.setMapperPagName(mapperPagName);
+        gmc.setMapperEnd(mapperEnd);
+        gmc.setDomainPagName(domainPagName);
+        gmc.setDomainEnd(domainEnd);
         ConfigUtilsKt.saveGenMpcLocalConfig(gmc);
         setAlert("保存成功", JBColor.GREEN, () -> save.setEnabled(true));
     }
@@ -291,8 +321,14 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
             childModelName.setText(gmc.getChildModelName());
             table.setText(gmc.getTable());
             outPath.setText(gmc.getOutPath());
-            changePag();
+            author.setText(gmc.getAuthor());
+            domainName.setText(gmc.getDomainName());
+            mapperPagName = StringUtilsKt.getOrElse(gmc.getMapperPagName(), mapperPagName);
+            mapperEnd = StringUtilsKt.getOrElse(gmc.getMapperEnd(), mapperEnd);
+            domainPagName = StringUtilsKt.getOrElse(gmc.getDomainPagName(), domainPagName);
+            domainEnd = StringUtilsKt.getOrElse(gmc.getDomainEnd(), domainEnd);
         }
+        changePag();
     }
 
     /**
@@ -301,53 +337,35 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
     private void changePag() {
         String pag = pagName.getText();
         String model = modelName.getText().split(",")[0];
-        String childModel = Optional.of(childModelName.getText())
+        String childModel = getChildModel();
+        StringBuilder sbModel = new StringBuilder().append(pag).append(".");
+
+        lastDomainPag = StringUtilsKt.join(domainPagName, childModel);
+        domainPag.setText(StringUtilsKt.join(sbModel.toString(), StringUtilsKt.getOrElse(domainName.getText(), model),
+                lastDomainPag));
+
+        String modelBeforeUnify = sbModel.append(model).toString();
+
+        lastControllerPag = StringUtilsKt.join(".controller", childModel);
+        controllerPag.setText(StringUtilsKt.join(modelBeforeUnify, lastControllerPag));
+
+        lastServicePag = StringUtilsKt.join(".service", childModel);
+        servicePag.setText(StringUtilsKt.join(modelBeforeUnify, lastServicePag));
+
+        lastMapperPag = StringUtilsKt.join(mapperPagName, childModel);
+        mapperPag.setText(StringUtilsKt.join(modelBeforeUnify, lastMapperPag));
+    }
+
+    /**
+     * 获得子模块
+     *
+     * @return 子模块
+     */
+    private String getChildModel() {
+        return Optional.ofNullable(childModelName.getText())
                 .filter(s -> s.length() > 0)
                 .map(s -> "." + s)
                 .orElse("");
-        String domainText = Optional.ofNullable(domainName.getText())
-                .filter(s -> s.length() > 0)
-                .orElse(model);
-
-        lastControllerPag = pag + ".%s.controller" + childModel;
-        controllerPag.setText(String.format(lastControllerPag, model));
-
-        lastServicePag = pag + ".%s.service" + childModel;
-        servicePag.setText(String.format(lastServicePag, model));
-
-        String mapperPagText = mapperPag.getText();
-        if (!"".equals(mapperPagText)) {
-            String[] pagName = mapperPagText.split(":");
-            mapperEnd = pagName[1];
-            String[] pagArr = pagName[0].split("\\.");
-            mapperPagName = pagArr[pagArr.length - 1];
-        }
-        lastMapperPag = pag + ".%s." + mapperPagName + childModel + ":" + mapperEnd;
-        mapperPag.setText(String.format(lastMapperPag, model));
-
-        String domainPagText = domainPag.getText();
-        if (!"".equals(domainPagText)) {
-            if (domainPagText.contains(":")) {
-                String[] pagName = domainPagText.split(":");
-                domainEnd = pagName[1];
-                String[] pagArr = pagName[0].split("\\.");
-                domainPagName = pagArr[pagArr.length - 1];
-            }
-        }
-        lastDomainPag = pag + ".%s." + domainPagName + childModel +
-                Optional.of(domainEnd).filter(s -> s.length() > 0).map(s -> ":" + s).orElse("");
-        domainPag.setText(String.format(lastDomainPag, domainText));
-    }
-
-    private void changeMapperPag(String pag, String childModel) {
-        String mapperPagText = mapperPag.getText();
-        if (!"".equals(mapperPagText)) {
-            String[] pagName = mapperPagText.split(":");
-            mapperEnd = pagName[1];
-            String[] pagArr = pagName[0].split("\\.");
-            mapperPagName = pagArr[pagArr.length - 1];
-        }
-        lastMapperPag = pag + ".%s." + mapperPagName + childModel + ":" + mapperEnd;
     }
 
 }
