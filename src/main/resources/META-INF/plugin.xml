@@ -27,15 +27,21 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ConsoleEditorPopupMenu" anchor="before" relative-to-action="ConsoleView.ClearAll"/>
         </action>
-        <action id="we2cat.string.StringForSelection" class="com.we2cat.action.StringForSelectionAction" text="字符串操作"
-                description="对字符串进行操作">
-            <add-to-group group-id="EditMenu" anchor="last"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="alt P"/>
-        </action>
-        <action id="we2cat.mybatis.GenerateMybatisPlusCode" class="com.we2cat.action.GenerateMybatisPlusCodeAction"
-                text="生成mybatis-plus模板代码" description="生成mybatis-plus模板代码" icon="/icons/mybatis.png">
-            <add-to-group group-id="ToolsMenu" anchor="before" relative-to-action="ToolsBasicGroup"/>
-            <keyboard-shortcut keymap="$default" first-keystroke="alt G"/>
-        </action>
+
+        <group id="com.we2cat.GroupedActions" icon="/icons/we2cat.svg" popup="true"
+               text="We2cat" description="We2cat">
+            <action id="com.we2cat.mybatis.GenerateMybatisPlusCode" class="com.we2cat.action.GenerateMybatisPlusCodeAction"
+                    text="生成mybatis-plus模板代码" description="生成mybatis-plus模板代码" icon="/icons/mybatis.png">
+                <keyboard-shortcut keymap="$default" first-keystroke="alt G"/>
+            </action>
+
+            <action id="com.we2cat.string.StringForSelection" class="com.we2cat.action.StringForSelectionAction"
+                    text="字符串格式化 _a->A" description="下划线和驼峰之间进行转换">
+                <keyboard-shortcut keymap="$default" first-keystroke="alt P"/>
+            </action>
+
+            <add-to-group group-id="ToolsBasicGroup" anchor="first"/>
+        </group>
+
     </actions>
 </idea-plugin>

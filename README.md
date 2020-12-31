@@ -13,6 +13,5 @@
 - mybatis-plus模板代码生成
 - 字符串下划线与大写字母进行转换<kbd>**Alt + P**</kbd>
 >- abc def -> abc_def
->- abc_def -> abcDef
->- abcDef -> abc_def
+>- abc_def <-> abcDef
 <!-- Plugin description end -->
