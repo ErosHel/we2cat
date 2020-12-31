@@ -3,7 +3,7 @@ package com.we2cat.utils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.we2cat.entity.GenerateMybatisPlusCodeConfig
-import java.io.*
+import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
 import java.nio.file.Path
@@ -87,7 +87,7 @@ private fun <T> getContent(fileName: String, clazz: Class<T>): T? {
 /**
  * 获取系统用户目录
  */
-fun getUserDir():String = System.getProperty("user.home")
+fun getUserDir(): String = System.getProperty("user.home")
 
 /**
  * 当前系统是否是windows

@@ -30,7 +30,8 @@
 
         <group id="com.we2cat.GroupedActions" icon="/icons/we2cat.svg" popup="true"
                text="We2cat" description="We2cat">
-            <action id="com.we2cat.mybatis.GenerateMybatisPlusCode" class="com.we2cat.action.GenerateMybatisPlusCodeAction"
+            <action id="com.we2cat.mybatis.GenerateMybatisPlusCode"
+                    class="com.we2cat.action.GenerateMybatisPlusCodeAction"
                     text="生成mybatis-plus模板代码" description="生成mybatis-plus模板代码" icon="/icons/mybatis.png">
                 <keyboard-shortcut keymap="$default" first-keystroke="alt G"/>
             </action>
