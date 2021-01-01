@@ -2,7 +2,7 @@ package com.we2cat.utils
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.we2cat.entity.GenerateMybatisPlusCodeConfig
+import com.we2cat.entity.GenMpcConfig
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
@@ -35,14 +35,14 @@ private const val genMpcName = "gen_mpc"
 /**
  * 获取生成Mybatis-plus代码本地配置
  */
-fun getGenMpcLocalConfig(): GenerateMybatisPlusCodeConfig? {
-    return getContent(genMpcName, GenerateMybatisPlusCodeConfig::class.java)
+fun getGenMpcLocalConfig(): GenMpcConfig? {
+    return getContent(genMpcName, GenMpcConfig::class.java)
 }
 
 /**
  * 保存生成Mybatis-plus代码本地配置
  */
-fun saveGenMpcLocalConfig(gmpConfig: GenerateMybatisPlusCodeConfig) {
+fun saveGenMpcLocalConfig(gmpConfig: GenMpcConfig) {
     saveContent(genMpcName, gmpConfig)
 }
 

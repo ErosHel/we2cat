@@ -48,6 +48,3 @@ fun join(vararg str: String): String {
     str.forEach { sb.append(it) }
     return sb.toString()
 }
-
-fun getOrElse(str: String?, elseStr: String): String =
-    if (str.isNullOrBlank()) elseStr else str

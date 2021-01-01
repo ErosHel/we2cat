@@ -3,9 +3,13 @@ package com.we2cat.gui;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBColor;
 import com.we2cat.codeauto.AutoCode;
-import com.we2cat.entity.GenerateMybatisPlusCodeConfig;
+import com.we2cat.entity.GenMpcConfig;
+import com.we2cat.entity.GenMpcDbConfig;
+import com.we2cat.entity.GenMpcModelConfig;
+import com.we2cat.entity.GenMpcOtherConfig;
 import com.we2cat.exception.AlertException;
 import com.we2cat.utils.ConfigUtilsKt;
+import com.we2cat.utils.ParamUtilsKt;
 import com.we2cat.utils.StringUtilsKt;
 
 import javax.swing.*;
@@ -120,31 +124,37 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
      */
     private JTextField author;
 
+    /**
+     * 窗体宽度
+     */
     private static final int WIDTH = 600;
 
+    /**
+     * 窗体高度
+     */
     private static final int HEIGHT = 440;
 
     private final Project project;
 
     /**
-     * 持久层包名
+     * 数据库配置
      */
-    private String mapperPagName = ".mapper";
+    private GenMpcDbConfig dbConfig;
 
     /**
-     * 持久层后缀
+     * 模块配置
      */
-    private String mapperEnd = "Mapper";
+    private GenMpcModelConfig modelConfig;
 
     /**
-     * 领域层包名
+     * 其他配置
      */
-    private String domainPagName = ".entity";
+    private GenMpcOtherConfig otherConfig;
 
     /**
-     * 领域层后缀
+     * 是否覆盖已存在文件
      */
-    private String domainEnd = "";
+    private boolean fileOverride = true;
 
     private String lastControllerPag = null;
     private String lastServicePag = null;
@@ -217,7 +227,7 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
                     String mapperPag = StringUtilsKt.join(appName, lastMapperPag);
                     AutoCode.of(getText(pagName))
                             .setAuthor(getText(author))
-                            .setDeleteName("deleted")
+                            .setDeleteName(modelConfig.getDeleteField())
                             .setTable(Optional.ofNullable(table.getText())
                                     .filter(t -> t.length() > 0)
                                     .map(t -> t.split(","))
@@ -227,21 +237,23 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
                             .setDbUrl(getText(dbUrl))
                             .setDbPw(getText(dbPw))
                             .setDbName(getText(dbName))
-                            .setFileOverride(true)
+                            .setFileOverride(fileOverride)
                             .setControllerPag(StringUtilsKt.join(appName, lastControllerPag))
                             .setServicePag(servicePag)
                             .setServiceImplPag(StringUtilsKt.join(servicePag, ".impl"))
-                            .setDaoEnd(mapperEnd)
+                            .setDaoEnd(modelConfig.getMapperEnd())
                             .setDaoPag(mapperPag)
                             .setMapperPag(StringUtilsKt.join(mapperPag, ".xml"))
                             .setEntityPag(StringUtilsKt.join(model, lastDomainPag))
-                            .setEntityEnd(domainEnd)
+                            .setEntityEnd(modelConfig.getDomainEnd())
                             .setActiveRecord(false)
                             .start();
                 }
                 setAlert("生成完成", JBColor.GREEN, () -> start.setEnabled(true));
             } catch (AlertException e) {
                 setAlert(e.getMessage(), JBColor.RED, () -> start.setEnabled(true));
+            } catch (Exception e) {
+                setAlert("生成出错-请检查配置", JBColor.RED, () -> start.setEnabled(true));
             }
         });
 
@@ -256,7 +268,7 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
     private String getText(JTextComponent component) {
         String text = component.getText();
         if (text == null || text.length() == 0) {
-            throw new AlertException(component.getName() + "<-不能为空");
+            throw new AlertException(StringUtilsKt.join("{", component.getName(), "}", "不能为空"));
         }
         return text;
     }
@@ -285,22 +297,26 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
      */
     private void saveConfig() {
         save.setEnabled(false);
-        GenerateMybatisPlusCodeConfig gmc = new GenerateMybatisPlusCodeConfig();
-        gmc.setDbUser(dbUser.getText());
-        gmc.setDbPw(new String(dbPw.getPassword()));
-        gmc.setDbUrl(dbUrl.getText());
-        gmc.setDbName(dbName.getText());
-        gmc.setPagName(pagName.getText());
-        gmc.setModelName(modelName.getText());
-        gmc.setChildModelName(childModelName.getText());
-        gmc.setTable(table.getText());
-        gmc.setOutPath(outPath.getText());
-        gmc.setAuthor(author.getText());
-        gmc.setDomainName(domainName.getText());
-        gmc.setMapperPagName(mapperPagName);
-        gmc.setMapperEnd(mapperEnd);
-        gmc.setDomainPagName(domainPagName);
-        gmc.setDomainEnd(domainEnd);
+        GenMpcConfig gmc = new GenMpcConfig();
+
+        dbConfig.setDbUser(dbUser.getText());
+        dbConfig.setDbPw(new String(dbPw.getPassword()));
+        dbConfig.setDbUrl(dbUrl.getText());
+        dbConfig.setDbName(dbName.getText());
+        dbConfig.setTable(table.getText());
+        gmc.setDb(dbConfig);
+
+        modelConfig.setPagName(pagName.getText());
+        modelConfig.setModelName(modelName.getText());
+        modelConfig.setChildModelName(childModelName.getText());
+        modelConfig.setDomainName(domainName.getText());
+        gmc.setModel(modelConfig);
+
+        otherConfig.setOutPath(outPath.getText());
+        otherConfig.setAuthor(author.getText());
+        otherConfig.setFileOverride(fileOverride);
+        gmc.setOther(otherConfig);
+
         ConfigUtilsKt.saveGenMpcLocalConfig(gmc);
         setAlert("保存成功", JBColor.GREEN, () -> save.setEnabled(true));
     }
@@ -309,23 +325,43 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
      * 读取并设置本地配置
      */
     public void readConfig() {
-        GenerateMybatisPlusCodeConfig gmc = ConfigUtilsKt.getGenMpcLocalConfig();
+        GenMpcConfig gmc = ConfigUtilsKt.getGenMpcLocalConfig();
         if (gmc != null) {
-            dbUser.setText(gmc.getDbUser());
-            dbPw.setText(gmc.getDbPw());
-            dbName.setText(gmc.getDbName());
-            dbUrl.setText(gmc.getDbUrl());
-            pagName.setText(gmc.getPagName());
-            modelName.setText(gmc.getModelName());
-            childModelName.setText(gmc.getChildModelName());
-            table.setText(gmc.getTable());
-            outPath.setText(gmc.getOutPath());
-            author.setText(gmc.getAuthor());
-            domainName.setText(gmc.getDomainName());
-            mapperPagName = StringUtilsKt.getOrElse(gmc.getMapperPagName(), mapperPagName);
-            mapperEnd = StringUtilsKt.getOrElse(gmc.getMapperEnd(), mapperEnd);
-            domainPagName = StringUtilsKt.getOrElse(gmc.getDomainPagName(), domainPagName);
-            domainEnd = StringUtilsKt.getOrElse(gmc.getDomainEnd(), domainEnd);
+            GenMpcDbConfig db = gmc.getDb();
+            if (db != null) {
+                dbConfig = db;
+                dbUser.setText(db.getDbUser());
+                dbPw.setText(db.getDbPw());
+                dbName.setText(db.getDbName());
+                dbUrl.setText(db.getDbUrl());
+                table.setText(db.getTable());
+            }
+
+            GenMpcModelConfig model = gmc.getModel();
+            if (model != null) {
+                modelConfig = model;
+                pagName.setText(model.getPagName());
+                modelName.setText(model.getModelName());
+                childModelName.setText(model.getChildModelName());
+                domainName.setText(model.getDomainName());
+            }
+
+            GenMpcOtherConfig other = gmc.getOther();
+            if (other != null) {
+                otherConfig = other;
+                outPath.setText(other.getOutPath());
+                author.setText(other.getAuthor());
+                fileOverride = ParamUtilsKt.getOrElse(other.getFileOverride(), fileOverride);
+            }
+        }
+        if (dbConfig == null) {
+            dbConfig = new GenMpcDbConfig();
+        }
+        if (modelConfig == null) {
+            modelConfig = new GenMpcModelConfig();
+        }
+        if (otherConfig == null) {
+            otherConfig = new GenMpcOtherConfig();
         }
         changePag();
     }
@@ -339,8 +375,8 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
         String childModel = getChildModel();
         StringBuilder sbModel = new StringBuilder().append(pag).append(".");
 
-        lastDomainPag = StringUtilsKt.join(domainPagName, childModel);
-        domainPag.setText(StringUtilsKt.join(sbModel.toString(), StringUtilsKt.getOrElse(domainName.getText(), model),
+        lastDomainPag = StringUtilsKt.join(modelConfig.getDomainPagName(), childModel);
+        domainPag.setText(StringUtilsKt.join(sbModel.toString(), ParamUtilsKt.getOrElse(domainName.getText(), model),
                 lastDomainPag));
 
         String modelBeforeUnify = sbModel.append(model).toString();
@@ -351,7 +387,7 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
         lastServicePag = StringUtilsKt.join(".service", childModel);
         servicePag.setText(StringUtilsKt.join(modelBeforeUnify, lastServicePag));
 
-        lastMapperPag = StringUtilsKt.join(mapperPagName, childModel);
+        lastMapperPag = StringUtilsKt.join(modelConfig.getMapperPagName(), childModel);
         mapperPag.setText(StringUtilsKt.join(modelBeforeUnify, lastMapperPag));
     }
 
