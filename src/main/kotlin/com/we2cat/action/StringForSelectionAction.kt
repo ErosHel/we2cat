@@ -34,7 +34,7 @@ class StringForSelectionAction : AnAction() {
 
     override fun update(e: AnActionEvent) {
         val editor = e.getData(CommonDataKeys.EDITOR)
-        e.presentation.isVisible = e.getData(CommonDataKeys.PROJECT) != null
+        e.presentation.isEnabled = e.getData(CommonDataKeys.PROJECT) != null
                 && editor != null && editor.selectionModel.hasSelection()
     }
 

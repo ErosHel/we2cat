@@ -16,6 +16,10 @@ class GenerateMybatisPlusCodeAction : AnAction() {
         getGenDialog(e.project!!).isVisible = true
     }
 
+    override fun update(e: AnActionEvent) {
+        getGenDialog(e.project!!).readConfig()
+    }
+
     private fun getGenDialog(project: Project): GenerateMybatisPlusCodeGui =
         genDialog ?: GenerateMybatisPlusCodeGui(project).also { genDialog = it }
 

@@ -37,7 +37,7 @@
             </action>
 
             <action id="com.we2cat.string.StringForSelection" class="com.we2cat.action.StringForSelectionAction"
-                    text="字符串格式化 _a->A" description="下划线和驼峰之间进行转换">
+                    text="对选中字段下划线与驼峰之间转换" description="下划线和驼峰之间进行转换">
                 <keyboard-shortcut keymap="$default" first-keystroke="alt P"/>
             </action>
 

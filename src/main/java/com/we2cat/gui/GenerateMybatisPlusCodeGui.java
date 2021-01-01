@@ -156,7 +156,6 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
     public GenerateMybatisPlusCodeGui(Project project) {
         this.project = project;
         setListener();
-        getAndSetConfig();
         setDefaultValue();
     }
 
@@ -307,9 +306,9 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
     }
 
     /**
-     * 获取并设置本地配置
+     * 读取并设置本地配置
      */
-    private void getAndSetConfig() {
+    public void readConfig() {
         GenerateMybatisPlusCodeConfig gmc = ConfigUtilsKt.getGenMpcLocalConfig();
         if (gmc != null) {
             dbUser.setText(gmc.getDbUser());
