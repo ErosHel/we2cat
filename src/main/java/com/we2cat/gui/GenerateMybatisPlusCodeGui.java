@@ -190,11 +190,10 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
         int x = screenSize.width / 2 - WIDTH / 2;
         int y = screenSize.height / 2 - HEIGHT / 2 - 30;
         setBounds(x, y, WIDTH, HEIGHT);
-        setFocusable(true);
-        setAlwaysOnTop(true);
         setTitle("mybatis-plus代码生成");
         setContentPane(contentPane);
-        setModal(Boolean.TRUE);
+        setAlwaysOnTop(Boolean.TRUE);
+        setResizable(Boolean.FALSE);
         this.dbUser.setName("用户名");
         this.dbPw.setName("密码");
         this.dbUrl.setName("数据库地址");
