@@ -159,6 +159,7 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
     private String lastControllerPag = null;
     private String lastServicePag = null;
     private String lastMapperPag = null;
+    private String lastMapperXmpPag = null;
     private String lastDomainPag = null;
 
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -223,7 +224,6 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
                             .filter(s -> s.length() > 0)
                             .orElse(appName);
                     String servicePag = StringUtilsKt.join(appName, lastServicePag);
-                    String mapperPag = StringUtilsKt.join(appName, lastMapperPag);
                     AutoCode.of(getText(pagName))
                             .setAuthor(getText(author))
                             .setDeleteName(modelConfig.getDeleteField())
@@ -241,8 +241,8 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
                             .setServicePag(servicePag)
                             .setServiceImplPag(StringUtilsKt.join(servicePag, ".impl"))
                             .setDaoEnd(modelConfig.getMapperEnd())
-                            .setDaoPag(mapperPag)
-                            .setMapperPag(StringUtilsKt.join(mapperPag, ".xml"))
+                            .setDaoPag(StringUtilsKt.join(appName, lastMapperPag))
+                            .setMapperPag(StringUtilsKt.join(appName, lastMapperXmpPag))
                             .setEntityPag(StringUtilsKt.join(model, lastDomainPag))
                             .setEntityEnd(modelConfig.getDomainEnd())
                             .setActiveRecord(false)
@@ -388,6 +388,7 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
 
         lastMapperPag = StringUtilsKt.join(modelConfig.getMapperPagName(), childModel);
         mapperPag.setText(StringUtilsKt.join(modelBeforeUnify, lastMapperPag));
+        lastMapperXmpPag = StringUtilsKt.join(modelConfig.getMapperPagName(), ".xml", childModel);
     }
 
     /**
