@@ -66,13 +66,15 @@ private fun <T> getContent(fileName: String, clazz: Class<T>): T? {
         Files.newBufferedReader(
             Path.of("${userHome}$fileName.conf"),
             Charset.forName("UTF-8")
-        ).use {
-            val sb = StringBuilder()
-            var line: String?
-            while (it.readLine().also { line = it } != null) {
-                sb.append(line)
+        ).use { bf ->
+            runCatching {
+                val sb = StringBuilder()
+                var line: String?
+                while (bf.readLine().also { line = it } != null) {
+                    sb.append(line)
+                }
+                return Gson().fromJson(sb.toString(), clazz)
             }
-            return Gson().fromJson(sb.toString(), clazz)
         }
     } else {
         val dir = File(userHome!!)
@@ -92,4 +94,4 @@ fun getUserDir(): String = System.getProperty("user.home")
 /**
  * 当前系统是否是windows
  */
-fun isWindows(): Boolean = os!!.indexOf("windows") >= 0
+fun isWindows(): Boolean = os!!.toLowerCase().indexOf("windows") >= 0

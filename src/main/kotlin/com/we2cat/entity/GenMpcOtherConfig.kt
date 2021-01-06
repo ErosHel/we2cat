@@ -1,6 +1,8 @@
 package com.we2cat.entity
 
 import com.we2cat.utils.getOrElse
+import com.we2cat.utils.getUserDir
+import com.we2cat.utils.isWindows
 
 class GenMpcOtherConfig {
 
@@ -13,6 +15,8 @@ class GenMpcOtherConfig {
      * 输出目录
      */
     var outPath: String? = null
+        get() = if (field.isNullOrBlank()) if (isWindows()) "D:/tmp"
+        else "${getUserDir()}/tmp" else field
 
     /**
      * 是否覆盖已存在文件
