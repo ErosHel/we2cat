@@ -6,7 +6,7 @@ package com.we2cat.utils
 /**
  * 将大写字母根据指定分隔符转换
  */
-fun parseUppercaseByAssign(text: String, assign: Char): String =
+fun parseAssignByUppercase(text: String, assign: Char): String =
     StringBuilder().let { sb ->
         text.forEachIndexed { index, c ->
             when {
@@ -23,7 +23,7 @@ fun parseUppercaseByAssign(text: String, assign: Char): String =
 /**
  * 根据指定分隔符转换为大写
  */
-fun parseAssignByUppercase(text: String, assign: Char): String =
+fun parseUppercaseByAssign(text: String, assign: Char): String =
     StringBuilder().let { sb ->
         var i = 0
         while (i < text.length) {

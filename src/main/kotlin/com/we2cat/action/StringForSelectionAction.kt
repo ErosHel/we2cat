@@ -4,8 +4,8 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
-import com.we2cat.utils.parseAssignByUppercase
 import com.we2cat.utils.parseUppercaseByAssign
+import com.we2cat.utils.parseAssignByUppercase
 
 /**
  * Created by hel on 2020/12/21 14:22
@@ -21,8 +21,8 @@ class StringForSelectionAction : AnAction() {
             }
             val replaceText = when {
                 selectedText.contains(" ") -> selectedText.replace(" ", "_")
-                selectedText.contains("_") -> parseAssignByUppercase(selectedText, '_')
-                else -> parseUppercaseByAssign(selectedText, '_')
+                selectedText.contains("_") -> parseUppercaseByAssign(selectedText, '_')
+                else -> parseAssignByUppercase(selectedText, '_')
             }
             val selectionModel = editor.selectionModel
             editor.document.replaceString(
