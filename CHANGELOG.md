@@ -6,6 +6,10 @@
 ### Changed
 - 待开发的Mybatis xml自动提示
 
+## [0.4.0]
+### Added
+- 增加实体类转json字符串
+
 ## [0.3.0]
 ### Added
 - 增加生成mybatis-plus模板代码

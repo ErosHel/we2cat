@@ -1,3 +1,59 @@
+<!DOCTYPE idea-plugin [
+        <!ELEMENT idea-plugin (id|name|vendor|extensions|applicationListeners|actions)*>
+        <!ATTLIST idea-plugin
+                require-restart CDATA #REQUIRED>
+        <!ELEMENT id (#PCDATA)>
+        <!ELEMENT name (#PCDATA)>
+        <!ELEMENT vendor (#PCDATA)>
+        <!ELEMENT extensions (consoleFilterProvider|applicationService|projectService|toolWindow)*>
+        <!ATTLIST extensions
+                defaultExtensionNs CDATA #REQUIRED>
+        <!ELEMENT consoleFilterProvider (#PCDATA)>
+        <!ATTLIST consoleFilterProvider
+                implementation CDATA #REQUIRED>
+        <!ELEMENT applicationService (#PCDATA)>
+        <!ATTLIST applicationService
+                serviceImplementation CDATA #REQUIRED>
+        <!ELEMENT projectService (#PCDATA)>
+        <!ATTLIST projectService
+                serviceImplementation CDATA #REQUIRED>
+        <!ELEMENT toolWindow (#PCDATA)>
+        <!ATTLIST toolWindow
+                factoryClass CDATA #REQUIRED
+                id CDATA #REQUIRED
+                secondary CDATA #REQUIRED
+                icon CDATA #REQUIRED
+                anchor CDATA #REQUIRED>
+        <!ELEMENT applicationListeners (listener)*>
+        <!ELEMENT listener (#PCDATA)>
+        <!ATTLIST listener
+                class CDATA #REQUIRED
+                topic CDATA #REQUIRED>
+        <!ELEMENT actions (action|group)*>
+        <!ELEMENT action (add-to-group|keyboard-shortcut)*>
+        <!ATTLIST action
+                class CDATA #REQUIRED
+                description CDATA #REQUIRED
+                icon CDATA #IMPLIED
+                id CDATA #REQUIRED
+                text CDATA #REQUIRED>
+        <!ELEMENT add-to-group (#PCDATA)>
+        <!ATTLIST add-to-group
+                anchor CDATA #REQUIRED
+                group-id CDATA #REQUIRED
+                relative-to-action CDATA #IMPLIED>
+        <!ELEMENT group (action|add-to-group)*>
+        <!ATTLIST group
+                id CDATA #REQUIRED
+                icon CDATA #REQUIRED
+                popup CDATA #REQUIRED
+                text CDATA #REQUIRED
+                description CDATA #REQUIRED>
+        <!ELEMENT keyboard-shortcut (#PCDATA)>
+        <!ATTLIST keyboard-shortcut
+                first-keystroke CDATA #REQUIRED
+                keymap CDATA #REQUIRED>
+        ]>
 <idea-plugin require-restart="false">
     <id>com.we2cat.plugin</id>
     <name>We2cat</name>
@@ -22,7 +78,7 @@
                   topic="com.intellij.ide.AppLifecycleListener"/>
     </applicationListeners>
     <actions>
-        <action id="we2cat.mybatis.RestoreSqlForSelection" class="com.we2cat.action.MybatisSqlForSelectionAction"
+        <action id="com.we2cat.mybatis.RestoreSqlForSelection" class="com.we2cat.action.MybatisSqlForSelectionAction"
                 text="选中的sql语句文本" description="选中的文本进行格式化">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="ConsoleEditorPopupMenu" anchor="before" relative-to-action="ConsoleView.ClearAll"/>
@@ -34,6 +90,7 @@
                     class="com.we2cat.action.GenerateMybatisPlusCodeAction"
                     text="生成mybatis-plus模板代码" description="生成mybatis-plus模板代码" icon="/icons/mybatis.png">
                 <keyboard-shortcut keymap="$default" first-keystroke="alt G"/>
+                <add-to-group group-id="GenerateGroup" anchor="first"/>
             </action>
 
             <action id="com.we2cat.string.StringForSelection" class="com.we2cat.action.StringForSelectionAction"
@@ -41,8 +98,13 @@
                 <keyboard-shortcut keymap="$default" first-keystroke="alt P"/>
             </action>
 
+            <action id="com.we2cat.json.Entity2Json" class="com.we2cat.action.Entity2JsonAction" text="实体类转json"
+                    description="实体类转json">
+                <keyboard-shortcut keymap="$default" first-keystroke="alt QUOTE"/>
+                <add-to-group group-id="GenerateGroup" anchor="first"/>
+            </action>
+
             <add-to-group group-id="ToolsBasicGroup" anchor="first"/>
         </group>
-
     </actions>
 </idea-plugin>

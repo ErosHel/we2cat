@@ -14,7 +14,6 @@ import com.we2cat.utils.StringUtilsKt;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
 import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,7 +21,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by hel on 2020/12/30 10:03
  */
-public class GenerateMybatisPlusCodeGui extends JDialog {
+public class GenerateMybatisPlusCodeGui extends BaseDialog {
 
     /**
      * 画布
@@ -124,16 +123,6 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
      */
     private JTextField author;
 
-    /**
-     * 窗体宽度
-     */
-    private static final int WIDTH = 600;
-
-    /**
-     * 窗体高度
-     */
-    private static final int HEIGHT = 440;
-
     private final Project project;
 
     /**
@@ -165,6 +154,8 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
     private static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public GenerateMybatisPlusCodeGui(Project project) {
+        super("mybatis-plus代码生成", 600, 440);
+        setContentPane(contentPane);
         this.project = project;
         setListener();
         setDefaultValue();
@@ -187,14 +178,6 @@ public class GenerateMybatisPlusCodeGui extends JDialog {
      * 设置默认值
      */
     private void setDefaultValue() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int x = screenSize.width / 2 - WIDTH / 2;
-        int y = screenSize.height / 2 - HEIGHT / 2 - 30;
-        setBounds(x, y, WIDTH, HEIGHT);
-        setTitle("mybatis-plus代码生成");
-        setContentPane(contentPane);
-        setAlwaysOnTop(Boolean.TRUE);
-        setResizable(Boolean.FALSE);
         this.dbUser.setName("用户名");
         this.dbPw.setName("密码");
         this.dbUrl.setName("数据库地址");

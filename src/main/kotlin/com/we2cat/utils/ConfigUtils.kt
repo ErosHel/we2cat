@@ -3,6 +3,7 @@ package com.we2cat.utils
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.we2cat.entity.GenMpcConfig
+import com.we2cat.entity.JsonConfig
 import java.io.File
 import java.nio.charset.Charset
 import java.nio.file.Files
@@ -26,7 +27,9 @@ private var os: String? = null
 /**
  * 生成Mybatis-plus代码本地配置文件名
  */
-private const val genMpcName = "gen_mpc"
+private const val genMpcConf = "gen_mpc"
+
+private const val jsonConf = "json"
 
 /**
  * 获取用户we2cat目录
@@ -36,14 +39,22 @@ private const val genMpcName = "gen_mpc"
  * 获取生成Mybatis-plus代码本地配置
  */
 fun getGenMpcLocalConfig(): GenMpcConfig? {
-    return getContent(genMpcName, GenMpcConfig::class.java)
+    return getContent(genMpcConf, GenMpcConfig::class.java)
+}
+
+/**
+ * 获取本地json配置
+ */
+fun getJsonConf(): JsonConfig {
+    return getContent(jsonConf, JsonConfig::class.java)
+        ?: return JsonConfig().also { saveContent(jsonConf, it) }
 }
 
 /**
  * 保存生成Mybatis-plus代码本地配置
  */
 fun saveGenMpcLocalConfig(gmpConfig: GenMpcConfig) {
-    saveContent(genMpcName, gmpConfig)
+    saveContent(genMpcConf, gmpConfig)
 }
 
 /**
