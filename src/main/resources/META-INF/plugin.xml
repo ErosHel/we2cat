@@ -1,63 +1,8 @@
-<!DOCTYPE idea-plugin [
-        <!ELEMENT idea-plugin (id|name|vendor|extensions|applicationListeners|actions)*>
-        <!ATTLIST idea-plugin
-                require-restart CDATA #REQUIRED>
-        <!ELEMENT id (#PCDATA)>
-        <!ELEMENT name (#PCDATA)>
-        <!ELEMENT vendor (#PCDATA)>
-        <!ELEMENT extensions (consoleFilterProvider|applicationService|projectService|toolWindow)*>
-        <!ATTLIST extensions
-                defaultExtensionNs CDATA #REQUIRED>
-        <!ELEMENT consoleFilterProvider (#PCDATA)>
-        <!ATTLIST consoleFilterProvider
-                implementation CDATA #REQUIRED>
-        <!ELEMENT applicationService (#PCDATA)>
-        <!ATTLIST applicationService
-                serviceImplementation CDATA #REQUIRED>
-        <!ELEMENT projectService (#PCDATA)>
-        <!ATTLIST projectService
-                serviceImplementation CDATA #REQUIRED>
-        <!ELEMENT toolWindow (#PCDATA)>
-        <!ATTLIST toolWindow
-                factoryClass CDATA #REQUIRED
-                id CDATA #REQUIRED
-                secondary CDATA #REQUIRED
-                icon CDATA #REQUIRED
-                anchor CDATA #REQUIRED>
-        <!ELEMENT applicationListeners (listener)*>
-        <!ELEMENT listener (#PCDATA)>
-        <!ATTLIST listener
-                class CDATA #REQUIRED
-                topic CDATA #REQUIRED>
-        <!ELEMENT actions (action|group)*>
-        <!ELEMENT action (add-to-group|keyboard-shortcut)*>
-        <!ATTLIST action
-                class CDATA #REQUIRED
-                description CDATA #REQUIRED
-                icon CDATA #IMPLIED
-                id CDATA #REQUIRED
-                text CDATA #REQUIRED>
-        <!ELEMENT add-to-group (#PCDATA)>
-        <!ATTLIST add-to-group
-                anchor CDATA #REQUIRED
-                group-id CDATA #REQUIRED
-                relative-to-action CDATA #IMPLIED>
-        <!ELEMENT group (action|add-to-group)*>
-        <!ATTLIST group
-                id CDATA #REQUIRED
-                icon CDATA #REQUIRED
-                popup CDATA #REQUIRED
-                text CDATA #REQUIRED
-                description CDATA #REQUIRED>
-        <!ELEMENT keyboard-shortcut (#PCDATA)>
-        <!ATTLIST keyboard-shortcut
-                first-keystroke CDATA #REQUIRED
-                keymap CDATA #REQUIRED>
-        ]>
 <idea-plugin require-restart="false">
     <id>com.we2cat.plugin</id>
     <name>We2cat</name>
     <vendor>hel</vendor>
+    <depends>com.intellij.modules.lang</depends>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
