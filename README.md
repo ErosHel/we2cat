@@ -1,4 +1,5 @@
 # We2cat 我们的🐱
+[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
 > 致力为开发创造快乐！
 
 <!-- Plugin description -->
