@@ -43,13 +43,13 @@ class Entity2JsonAction : AnAction() {
 
     private var jsonConfig: JsonConfig? = null
 
-    private val classRegex = Regex("class [a-zA-z0-9_]+ ")
+    private val classRegex = Regex("class [a-zA-z0-9_]+[< ]")
 
-    private val classNameRegex = Regex("class| ")
+    private val classNameRegex = Regex("class|[< ]")
 
     private val parentClassRegex = Regex("extends [a-zA-z0-9_]+[< ]")
 
-    private val parentClassNameRegex = Regex("extends| ")
+    private val parentClassNameRegex = Regex("extends|[< ]")
 
     private val filedRegex = Regex("\\s.+ [a-zA-z][a-zA-z0-9_]+;")
 
