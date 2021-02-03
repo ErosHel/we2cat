@@ -77,8 +77,10 @@ class Entity2JsonAction : AnAction() {
                 when {
                     type.contains(Regex("List|\\[]|Set")) ->
                         "[\n$blankStr  ${getClassJson(getMultipleTypeName(type), blank + 2, true)}\n$blankStr]"
-                    type.matches(Regex("Integer|Long")) -> -1
-                    type.matches(Regex("Float|Double|BigInteger|BigDecimal")) -> 0.00
+                    type.matches(Regex("[Bb]yte|[Ss]hort|int|Integer|[Ll]ong|BigInteger")) -> -1
+                    type.matches(Regex("[Ff]loat|[Dd]ouble|BigDecimal")) -> 0.0
+                    type.matches(Regex("[Bb]oolean")) -> false
+                    type.matches(Regex("char|Character")) -> '0'
                     else -> getClassJson(type, blank + 1, false)
                 }
             )
