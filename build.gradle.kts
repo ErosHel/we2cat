@@ -100,11 +100,27 @@ tasks {
                 File("./README.md").readText().lines().run {
                     val start = "<!-- Plugin description -->"
                     val end = "<!-- Plugin description end -->"
-
                     if (!containsAll(listOf(start, end))) {
                         throw GradleException("Plugin description section not found in README.md:\n$start ... $end")
                     }
-                    subList(indexOf(start) + 1, indexOf(end))
+
+                    val englishDoc = """
+                        | [GitHub](https://github.com/ErosHel/we2cat) |
+                        ---
+                        **We2cat** is a **idea** plug-in that contains many mybatis and other automation functions, and is committed to creating happiness for development! 😊
+                        - Complete conversion and printing of mybatis SQL log
+                        - Mybatis plus template code generation
+                        > Use the <KBD>**Alt + G**</KBD> or <KBD>**Alt + ins**</KBD> generate menu and open the window
+                        - Convert string underscores to uppercase letters <KBD>**Alt + p**</KBD>
+                        >- abc def -> abc_def
+                        >- abc_def <-> abcDef
+                        - Entity class conversion JSON
+                        > Select the current entity class window and use <KBD>**Alt + quotation marks**</KBD> or <KBD>**Alt + ins**</KBD> generate menu
+                        ---
+                        
+                    """.trimIndent()
+
+                    englishDoc.split("\n").plus(subList(indexOf(start) + 1, indexOf(end)))
                 }.joinToString("\n").run { markdownToHTML(this) }
             }
         )

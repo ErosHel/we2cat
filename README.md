@@ -1,7 +1,6 @@
 # We2cat 我们的🐱
-[![License](https://img.shields.io/badge/license-Apache%202-4EB1BA.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![GitHub license](https://img.shields.io/github/license/ErosHel/we2cat)](https://github.com/ErosHel/we2cat/blob/master/LICENSE)
 > 致力为开发创造快乐！
-
 <!-- Plugin description -->
 **we2cat**是一个包含众多mybatis及其他自动化功能的**idea**插件，致力为开发创造快乐！😊
 - mybatis sql日志转换完整并打印
