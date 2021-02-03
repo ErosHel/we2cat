@@ -47,6 +47,10 @@ class Entity2JsonAction : AnAction() {
 
     private val classNameRegex = Regex("class| ")
 
+    private val parentClassRegex = Regex("extends [a-zA-z0-9_]+[< ]")
+
+    private val parentClassNameRegex = Regex("extends| ")
+
     private val filedRegex = Regex("\\s.+ [a-zA-z][a-zA-z0-9_]+;")
 
     private val filedMultipleRegex = Regex("(<[a-zA-z0-9_]+>)|([a-zA-z0-9_]+\\[])")
@@ -69,7 +73,14 @@ class Entity2JsonAction : AnAction() {
      * 生成Json
      */
     private fun genJson(editorText: String, blank: Int, isMultiple: Boolean): String {
-        val filedList = filedRegex.findAll(editorText).toList()
+        //当前类字段
+        var filedList = filedRegex.findAll(editorText).toList()
+        //获取父类字段
+        val className = parentClassRegex.find(editorText)?.value?.replace(parentClassNameRegex, "")
+        if (className != null) {
+            filedList = filedRegex.findAll(getJavaFiles(className)[0].text).toList().plus(filedList)
+        }
+
         //判断是否层数限制或字段是否为空
         if (blank >= jsonConfig!!.level + (if (isMultiple) 2 else 1) || filedList.isEmpty()) {
             return "\"\""
