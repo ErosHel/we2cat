@@ -25,7 +25,9 @@
         <children>
           <component id="a616e" class="javax.swing.JTextPane" binding="jsonTextPane">
             <constraints/>
-            <properties/>
+            <properties>
+              <contentType value="text/plain"/>
+            </properties>
           </component>
         </children>
       </scrollpane>

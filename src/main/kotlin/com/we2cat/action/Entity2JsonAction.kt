@@ -55,6 +55,16 @@ class Entity2JsonAction : AnAction() {
 
     private val pagRegexString = "package "
 
+    private val multipleRegex = Regex("List|\\[]|Set")
+
+    private val numberRegex = Regex("[Bb]yte|[Ss]hort|int|Integer|[Ll]ong|BigInteger")
+
+    private val floatRegex = Regex("[Ff]loat|[Dd]ouble|BigDecimal")
+
+    private val booleanRegex = Regex("[Bb]oolean")
+
+    private val charRegex = Regex("char|Character")
+
     /**
      * 生成Json
      */
@@ -75,12 +85,12 @@ class Entity2JsonAction : AnAction() {
             //后半数据
             sb.append(
                 when {
-                    type.contains(Regex("List|\\[]|Set")) ->
+                    type.contains(multipleRegex) ->
                         "[\n$blankStr  ${getClassJson(getMultipleTypeName(type), blank + 2, true)}\n$blankStr]"
-                    type.matches(Regex("[Bb]yte|[Ss]hort|int|Integer|[Ll]ong|BigInteger")) -> -1
-                    type.matches(Regex("[Ff]loat|[Dd]ouble|BigDecimal")) -> 0.0
-                    type.matches(Regex("[Bb]oolean")) -> false
-                    type.matches(Regex("char|Character")) -> '0'
+                    type.matches(numberRegex) -> -1
+                    type.matches(floatRegex) -> 0.0
+                    type.matches(booleanRegex) -> false
+                    type.matches(charRegex) -> '0'
                     else -> getClassJson(type, blank + 1, false)
                 }
             )
