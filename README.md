@@ -1,5 +1,7 @@
 # We2cat 我们的🐱
 [![GitHub license](https://img.shields.io/github/license/ErosHel/we2cat)](https://github.com/ErosHel/we2cat/blob/master/LICENSE)
+[![Downloads](https://img.shields.io/jetbrains/plugin/v/com.we2cat.plugin)](https://plugins.jetbrains.com/plugin/16013-we2cat) 
+
 > 致力为开发创造快乐！
 <!-- Plugin description -->
 **we2cat**是一个包含众多mybatis及其他自动化功能的**idea**插件，致力为开发创造快乐！😊
