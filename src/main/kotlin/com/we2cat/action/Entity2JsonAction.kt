@@ -21,7 +21,7 @@ class Entity2JsonAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         entity2JsonGui?.run {
             val editorText = e.getData(CommonDataKeys.EDITOR)!!.document.text
-            val className = classRegex.find(editorText)?.value?.replace(classNameRegex, "")
+            val className = classRegex.find(editorText)?.value
             if (!className.isNullOrBlank()) {
                 isVisible = true
                 jsonConfig = getJsonConf()
@@ -43,19 +43,13 @@ class Entity2JsonAction : AnAction() {
 
     private var jsonConfig: JsonConfig? = null
 
-    private val classRegex = Regex("class [a-zA-z0-9_]+[< ]")
+    private val classRegex = Regex("(?<=class\\s)\\w+(?=\\s)")
 
-    private val classNameRegex = Regex("class|[< ]")
+    private val parentClassRegex = Regex("(?<=extends\\s)\\w+(?=[<\\s])")
 
-    private val parentClassRegex = Regex("extends [a-zA-z0-9_]+[< ]")
+    private val filedRegex = Regex("\\s.+ [a-zA-Z]\\w+;")
 
-    private val parentClassNameRegex = Regex("extends|[< ]")
-
-    private val filedRegex = Regex("\\s.+ [a-zA-z][a-zA-z0-9_]+;")
-
-    private val filedMultipleRegex = Regex("(<[a-zA-z0-9_]+>)|([a-zA-z0-9_]+\\[])")
-
-    private val filedMultipleNameRegex = Regex("[<>]|\\[]")
+    private val filedMultipleRegex = Regex("((?<=<)\\w+(?=>))|(\\w+(?=\\[]))")
 
     private val pagRegexString = "package "
 
@@ -76,7 +70,7 @@ class Entity2JsonAction : AnAction() {
         //当前类字段
         var filedList = filedRegex.findAll(editorText).toList()
         //获取父类字段
-        val className = parentClassRegex.find(editorText)?.value?.replace(parentClassNameRegex, "")
+        val className = parentClassRegex.find(editorText)?.value
         if (className != null) {
             filedList = filedRegex.findAll(getJavaFiles(className)[0].text).toList().plus(filedList)
         }
@@ -96,8 +90,11 @@ class Entity2JsonAction : AnAction() {
             //后半数据
             sb.append(
                 when {
-                    type.contains(multipleRegex) ->
-                        "[\n$blankStr  ${getClassJson(getMultipleTypeName(type), blank + 2, true)}\n$blankStr]"
+                    type.contains(multipleRegex) -> "[\n$blankStr  ${
+                        getClassJson(
+                            filedMultipleRegex.find(type)!!.value, blank + 2, true
+                        )
+                    }\n$blankStr]"
                     type.matches(numberRegex) -> -1
                     type.matches(floatRegex) -> 0.0
                     type.matches(booleanRegex) -> false
@@ -110,13 +107,6 @@ class Entity2JsonAction : AnAction() {
             }
         }
         return sb.append("\n${String(CharArray((blank - 1) * 2) { ' ' })}}").toString()
-    }
-
-    /**
-     * 获取集合数组的实体类名
-     */
-    private fun getMultipleTypeName(multipleFiled: String): String {
-        return filedMultipleRegex.find(multipleFiled)!!.value.replace(filedMultipleNameRegex, "")
     }
 
     /**
