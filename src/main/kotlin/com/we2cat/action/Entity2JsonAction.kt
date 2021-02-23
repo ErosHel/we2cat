@@ -47,7 +47,7 @@ class Entity2JsonAction : AnAction() {
 
     private val parentClassRegex = Regex("(?<=extends\\s)\\w+(?=[<\\s])")
 
-    private val filedRegex = Regex("\\s.+ [a-zA-Z]\\w+;")
+    private val filedRegex = Regex("(?=private|protected|public|\\s)\\s[A-Z]\\w*\\s[a-zA-Z]\\w*;")
 
     private val filedMultipleRegex = Regex("((?<=<)\\w+(?=>))|(\\w+(?=\\[]))")
 
