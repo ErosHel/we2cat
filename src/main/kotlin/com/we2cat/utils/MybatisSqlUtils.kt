@@ -79,7 +79,10 @@ fun getParamByType(param: String, type: String): String =
  * 设置行数据
  */
 private fun setLine(line: String) {
-    if (line.contains(Preparing)) preparingLine = line.split(Preparing)[1]
+    if (line.contains(Preparing)) {
+        parametersLine = ""
+        preparingLine = line.split(Preparing)[1]
+    }
     if (line.contains(Parameters)) parametersLine = line.split(Parameters)[1]
 }
 
