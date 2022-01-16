@@ -1,7 +1,6 @@
 package com.we2cat.listeners
 
 import com.intellij.ide.AppLifecycleListener
-import com.intellij.openapi.project.Project
 
 /**
  * Created by hel on 2020/12/21 17:46
@@ -14,10 +13,6 @@ class AppListener : AppLifecycleListener {
 
     override fun welcomeScreenDisplayed() {
         println("EditorListener.welcomeScreenDisplayed")
-    }
-
-    override fun appStarting(projectFromCommandLine: Project?) {
-        println("EditorListener.appStarting")
     }
 
     override fun projectFrameClosed() {
