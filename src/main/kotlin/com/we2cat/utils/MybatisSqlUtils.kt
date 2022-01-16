@@ -30,7 +30,7 @@ fun mybatisSqlLog(projectBasePath: String, line: String) {
                 logPrintln(
                     projectBasePath,
                     "$StartWith$it",
-                    getColor(preparingLine[0].toLowerCase())
+                    getColor(preparingLine[0].lowercaseChar())
                 )
             }
             resetLine()

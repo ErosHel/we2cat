@@ -11,9 +11,9 @@ fun parseAssignByUppercase(text: String, assign: Char): String =
         text.forEachIndexed { index, c ->
             when {
                 index == 0 -> {
-                    sb.append(c.toLowerCase())
+                    sb.append(c.lowercase())
                 }
-                c.toInt() in 65..90 -> sb.append("${assign}${c + 32}")
+                c.code in 65..90 -> sb.append("${assign}${c + 32}")
                 else -> sb.append(c)
             }
         }
@@ -27,11 +27,11 @@ fun parseUppercaseByAssign(text: String, assign: Char): String =
     StringBuilder().let { sb ->
         var i = 0
         while (i < text.length) {
-            if (text[i].toInt() in 65..90)
-                return@let text.toLowerCase()
+            if (text[i].code in 65..90)
+                return@let text.lowercase()
             if (text[i] == assign) {
                 val c = text[++i]
-                if (c.toInt() in 97..122)
+                if (c.code in 97..122)
                     sb.append(c - 32)
                 else sb.append(c)
             } else sb.append(text[i])

@@ -105,4 +105,4 @@ fun getUserDir(): String = System.getProperty("user.home")
 /**
  * 当前系统是否是windows
  */
-fun isWindows(): Boolean = os!!.toLowerCase().indexOf("windows") >= 0
+fun isWindows(): Boolean = os!!.lowercase().indexOf("windows") >= 0
