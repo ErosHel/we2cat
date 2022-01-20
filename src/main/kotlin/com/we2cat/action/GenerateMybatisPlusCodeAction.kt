@@ -13,11 +13,11 @@ class GenerateMybatisPlusCodeAction : AnAction() {
     private var genDialog: GenerateMybatisPlusCodeGui? = null
 
     override fun actionPerformed(e: AnActionEvent) {
-        getGenDialog(e.project!!).isVisible = true
+        e.project?.let { getGenDialog(it).isVisible = true }
     }
 
     override fun update(e: AnActionEvent) {
-        getGenDialog(e.project!!).readConfig()
+        e.project?.let { getGenDialog(it).readConfig() }
     }
 
     private fun getGenDialog(project: Project): GenerateMybatisPlusCodeGui =
